@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Fibonacci Heap and Operations</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 900px; /* Increased width */
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            font-family: 'Fira Code', 'Fira Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+        }
+        h1 {
+            color: #007bff; /* Blue color for main heading */
+            text-align: center;
+            font-family: 'Montserrat', sans-serif; /* Custom font for h1 */
+        }
+        h2 {
+            color: #4CAF50; /* Green color for secondary headings */
+            font-family: 'Roboto', sans-serif; /* Custom font for h2 */
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .accent-bg {
+            background-color: #f0f8ff; /* Light blue background */
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>About Fibonacci Heap and Operations</h1>
+        </header>
+        <main>
+            <section>
+                <h2>What is a Fibonacci Heap?</h2>
+                <p>A Fibonacci heap is a specific type of heap data structure that supports efficient operations required in graph algorithms such as Dijkstra's shortest path algorithm and Prim's minimum spanning tree algorithm. It differs from traditional heaps by allowing certain operations, like merge and decrease key, to be executed more efficiently, often in constant time.</p>
+            </section>
+            <section>
+                <h2>Operations Supported</h2>
+                <ul>
+                    <li><strong>Insert:</strong> Add a new element to the heap.</li>
+                    <li><strong>Delete Min/Max:</strong> Remove the smallest or largest element from the heap.</li>
+                    <li><strong>Decrease Key:</strong> Decrease the value of a key in the heap, maintaining heap properties.</li>
+                    <li><strong>Merge:</strong> Merge two Fibonacci heaps into one heap.</li>
+                    <li><strong>Extract Min/Max:</strong> Remove and return the smallest or largest element from the heap.</li>
+                </ul>
+                <p>Fibonacci heaps are particularly efficient in scenarios where the number of extract-min operations dominates, as they perform this operation in constant amortized time.</p>
+            </section>
+            <section class="accent-bg">
+                <h2>Applications</h2>
+                <p>Fibonacci heaps are used in various applications, including:</p>
+                <ul>
+                    <li>Optimized implementations of Dijkstra's algorithm for finding shortest paths in graphs.</li>
+                    <li>Implementations of Prim's algorithm for finding minimum spanning trees.</li>
+                    <li>Other algorithms that require priority queue operations with efficient decrease key and merge operations.</li>
+                </ul>
+                <p>Their ability to handle frequent decrease key operations efficiently makes them suitable for scenarios where dynamic updates to priority values are required.</p>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 Fibonacci Heap Website</p>
+        </footer>
+    </div>
+</body>
+</html>

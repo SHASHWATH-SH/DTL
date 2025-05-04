@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Heap Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .quiz-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .answer {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: left;
+            background-color: white;
+            cursor: pointer;
+        }
+        .answer:hover {
+            background-color: #f8f8f8;
+        }
+        .answer.correct {
+            background-color: #d4edda;
+        }
+        .answer.incorrect {
+            background-color: #f8d7da;
+        }
+        #next-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #next-btn:hover {
+            background-color: #0056b3;
+        }
+        #question-counter {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        #reason {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Fibonacci Heap Quiz</h1>
+        <div id="question-container"></div>
+        <button id="next-btn">Next</button>
+        <div id="question-counter"></div>
+        <div id="reason"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the primary advantage of a Fibonacci heap over other heap data structures?",
+                answers: [
+                    "Lower amortized time complexity",
+                    "Simpler implementation",
+                    "Less memory usage",
+                    "Faster worst-case performance"
+                ],
+                correct: 0,
+                reason: "Fibonacci heaps offer lower amortized time complexity for certain operations, particularly the decrease-key operation, which is O(1) amortized."
+            },
+            {
+                question: "Which operation in a Fibonacci heap has an amortized time complexity of O(1)?",
+                answers: [
+                    "Delete-min",
+                    "Decrease-key",
+                    "Insert",
+                    "Find-min"
+                ],
+                correct: 2,
+                reason: "The insert operation in a Fibonacci heap has an amortized time complexity of O(1), making it very efficient for adding new elements."
+            },
+            {
+                question: "What is the worst-case time complexity for the delete-min operation in a Fibonacci heap?",
+                answers: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+                correct: 1,
+                reason: "The delete-min operation in a Fibonacci heap has a worst-case time complexity of O(log n), which occurs during the consolidation phase."
+            },
+            {
+                question: "Who invented the Fibonacci heap?",
+                answers: ["Donald Knuth", "Michael L. Fredman and Robert E. Tarjan", "Edsger W. Dijkstra", "Alan Turing"],
+                correct: 1,
+                reason: "The Fibonacci heap was invented by Michael L. Fredman and Robert E. Tarjan in 1984."
+            },
+            {
+                question: "What is the main data structure used in a Fibonacci heap?",
+                answers: ["Binary tree", "Array", "Linked list", "Circular doubly linked list"],
+                correct: 3,
+                reason: "Fibonacci heaps use circular doubly linked lists to represent the children of each node, allowing for efficient merging and cutting operations."
+            },
+            {
+                question: "Which of the following is NOT a valid operation on a Fibonacci heap?",
+                answers: ["Merge", "Insert", "Decrease-key", "Increase-key"],
+                correct: 3,
+                reason: "Increase-key is not a standard operation in Fibonacci heaps. The structure is optimized for decrease-key operations."
+            },
+            {
+                question: "What is the amortized time complexity of the decrease-key operation in a Fibonacci heap?",
+                answers: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+                correct: 0,
+                reason: "The decrease-key operation in a Fibonacci heap has an amortized time complexity of O(1), which is one of its key advantages."
+            },
+            {
+                question: "In a Fibonacci heap, what is the maximum number of children a node can have?",
+                answers: ["2", "Unlimited", "Fibonacci number of its degree", "Log n"],
+                correct: 1,
+                reason: "In a Fibonacci heap, a node can have an unlimited number of children, which contributes to its efficiency for certain operations."
+            },
+            {
+                question: "What is the primary use case for Fibonacci heaps?",
+                answers: ["Sorting algorithms", "Graph algorithms", "String matching", "Machine learning"],
+                correct: 1,
+                reason: "Fibonacci heaps are primarily used in graph algorithms, especially for improving the performance of Dijkstra's shortest path algorithm."
+            },
+            {
+                question: "Which property is NOT maintained in a Fibonacci heap?",
+                answers: ["Heap property", "Minimum element at the root", "Balance", "Parent's key is smaller than children's keys"],
+                correct: 2,
+                reason: "Unlike balanced trees, Fibonacci heaps do not maintain balance. They allow for arbitrary structure to achieve better amortized performance."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        const questionContainer = document.getElementById('question-container');
+        const nextButton = document.getElementById('next-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const reasonContainer = document.getElementById('reason');
+
+        function loadQuestion() {
+            const question = quizData[currentQuestion];
+            let answersHtml = '';
+            question.answers.forEach((answer, index) => {
+                answersHtml += `<button class="answer" data-index="${index}">${answer}</button>`;
+            });
+            questionContainer.innerHTML = `
+                <div class="question">${currentQuestion + 1}. ${question.question}</div>
+                ${answersHtml}
+            `;
+            questionCounter.textContent = `${currentQuestion + 1} of ${quizData.length} questions`;
+            nextButton.style.display = 'none';
+            reasonContainer.textContent = '';
+
+            document.querySelectorAll('.answer').forEach(button => {
+                button.addEventListener('click', selectAnswer);
+            });
+        }
+
+        function selectAnswer(e) {
+            const selectedButton = e.target;
+            const question = quizData[currentQuestion];
+            const correct = selectedButton.dataset.index == question.correct;
+
+            if (correct) score++;
+
+            document.querySelectorAll('.answer').forEach(button => {
+                button.disabled = true;
+                if (button.dataset.index == question.correct) {
+                    button.classList.add('correct');
+                } else if (button === selectedButton) {
+                    button.classList.add('incorrect');
+                }
+            });
+
+            reasonContainer.textContent = question.reason;
+            nextButton.style.display = 'block';
+        }
+
+        nextButton.addEventListener('click', () => {
+            currentQuestion++;
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                questionContainer.innerHTML = `<h2>Quiz completed!</h2><p>Your score: ${score} out of ${quizData.length}</p>`;
+                nextButton.style.display = 'none';
+                questionCounter.style.display = 'none';
+                reasonContainer.textContent = ''; // Clear the reason container
+            }
+        });
+        loadQuestion();
+    </script>
+</body>
+</html>
